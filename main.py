@@ -14,27 +14,28 @@ def find_maximal_good_vector(matrix, size, initial, best):
 
 # takes matrix and checks all submatrices of size. Returns true if no complete submatrices of one colour, else false
 def is_good_colouring_single(matrix, size):
+    n = matrix.shape[0]
     vertices = []
-    for i in range(len(matrix) - 1):
+    for i in range(n - 1):
         vertices.append(i)
-    count = max(math.comb(len(matrix) - 1, size - 1), 0)
+    count = max(math.comb(n - 1, size - 1), 0)
     selected_list = []
     clique = complete_clique(size, 1)
 
-    if size > len(matrix):
+    if size > n:
         return True
 
-    if size == len(matrix):
-        for j in range(len(matrix)):
-            for k in range(len(matrix)):
-                if clique[j][k] != matrix[i][j]:
+    if size == n:
+        for j in range(n):
+            for k in range(n):
+                if clique[j][k] != matrix.item(j, k):
                     return False
         return True
     
     while len(selected_list) < count:
         selected = copy.deepcopy(vertices)
         random.shuffle(selected)
-        selected = selected[0:len(matrix) - size]
+        selected = selected[0:n - size]
         if new_includes(selected_list, selected):
             continue
         else:
@@ -42,9 +43,9 @@ def is_good_colouring_single(matrix, size):
         matrix_copy = copy.deepcopy(matrix)
         submatrix = submatrix_builder(matrix_copy, selected)
         match = True
-        for j in range(len(submatrix)):
-            for k in range(len(submatrix)):
-                if clique[j][k] != submatrix[j][k]:
+        for j in range(submatrix.shape[0]):
+            for k in range(submatrix.shape[0]):
+                if clique[j][k] != submatrix.item(j, k):
                     match = False
                     break
             if not match:
@@ -55,14 +56,11 @@ def is_good_colouring_single(matrix, size):
 
 # returns a adjacency matrix of size all one colour
 def complete_clique(size, colour):
-    matrix = []
+    matrix = np.zeros((size, size), dtype=int)
     for i in range(size):
-        matrix.append([])
         for j in range(size):
-            if i >= j:
-                matrix[i].append(0)
-            else:
-                matrix[i].append(colour)
+            if i < j:
+                matrix[i, j] = colour
     return matrix
 
 # Checks if sub_list is an element of main_list
@@ -82,19 +80,18 @@ def new_includes(main_list, sub_list):
 # returns a submatrix with the indexed columns removed from the original matrix
 def submatrix_builder(matrix, columns):
     columns.sort()
-    for column in reversed(columns):
-        remove_column(matrix, column)
-        del matrix[column]
+    for column in columns[::-1]:
+        matrix = remove_column(matrix, column)
+        matrix = np.delete(matrix, column, 0)
     return matrix
 
 def remove_column(matrix, index):
-    for i in range(len(matrix)):
-        row = matrix[i]
-        del row[index]
+    return np.delete(matrix, index, 1)
 
 def summation(a, b):
     return a + b
 
+# Takes binary array and shifts leading 1 over to next open spot
 def step_digit(previous):
     count = 0
     sum = reduce(previous, summation)
@@ -112,6 +109,7 @@ def step_digit(previous):
                 previous[i] = 0
     return previous
 
+# Takes binary array and add 1 over to next open spot after leading 1
 def add_digit(previous):
     count = 0
     sum = reduce(previous, summation)
@@ -128,8 +126,7 @@ def add_digit(previous):
                 add = True
     return previous
 
-
-print(is_good_colouring_single(    [[0,-1,1,-1,-1,-1,1,1,-1,1,-1,1,-1,1,-1,1,-1,1,1,-1,1,1,-1,1,1,-1,1,-1,1,-1,-1,-1,1,-1,-1],
+print(is_good_colouring_single(np.array(    [[0,-1,1,-1,-1,-1,1,1,-1,1,-1,1,-1,1,-1,1,-1,1,1,-1,1,1,-1,1,1,-1,1,-1,1,-1,-1,-1,1,-1,-1],
     [0,0,-1,1,1,1,-1,-1,-1,1,-1,1,-1,1,-1,1,-1,1,1,-1,-1,1,1,1,-1,1,-1,1,-1,1,-1,-1,-1,1,-1],
     [0,0,0,-1,1,1,-1,-1,1,-1,1,-1,1,-1,1,-1,1,-1,-1,1,1,1,1,-1,-1,1,-1,1,1,-1,-1,-1,1,-1,-1],
     [0,0,0,0,-1,-1,1,1,1,-1,1,-1,1,-1,1,-1,1,-1,-1,1,1,-1,1,1,1,-1,1,-1,-1,1,-1,-1,-1,1,-1],
@@ -163,4 +160,4 @@ print(is_good_colouring_single(    [[0,-1,1,-1,-1,-1,1,1,-1,1,-1,1,-1,1,-1,1,-1,
     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-1,-1,1],
     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,-1],
     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-1],
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]], 6))
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]), 4))
