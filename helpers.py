@@ -23,20 +23,6 @@ def graph_to_matrix(address, n):
   return matrices
 
 
-# test for graph to mateix
-produced = graph_to_matrix("r46_35some.g6", 35)
-graphs = nx.read_graph6("r46_35some.g6")
-assert len(produced) == len(graphs)
-for i in range(len(produced)):
-  for j in range(35):
-    for k in range(35):
-      if j == k:
-        assert produced[i][j][k] == 0
-      elif produced[i][j][k] == 1:
-        assert graphs[i].has_edge(j, k)
-
-
-
 # TODO
 # change to parameter to what you think is needed
 # you can use this as a dummy function for the search
