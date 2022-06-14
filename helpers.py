@@ -29,7 +29,6 @@ def graph_to_matrix(graph, n):
   return matrix
 
 
-# TODO
 # take in adj matrix, int n, value
 # return a list, where each element is a n tuple
 # each element is a size n clique found in the adj matrix
@@ -60,6 +59,23 @@ def find_subgraphs(matrix, n, value):
         else:
           acc.append(new_list)
   return result
+
+
+# input small_cliques (output of find_subgraphs), row, value
+# make sure the new node (the row) does not form a clique
+# with any of the previous clique
+# if row[i] == value, then new node is adjacent with node i
+# if clique formed return true
+# else return false
+def check_clique(small_cliques, row, value):
+  for clique in small_cliques:
+    no_clique = False
+    for i in range(len(clique)):
+      if row[clique[i]] != value:
+        no_clique = True
+    if not no_clique:
+      return True
+  return False
 
   
 

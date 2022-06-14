@@ -75,9 +75,9 @@ for i in range(len(result)):
 # Test for check_clique
 new_row_0_a = [1, 1, 0]
 new_row_0_b = [1, 1, 1]
-assert helpers.check_clique(matrix_0_cliques, new_row_0_a) == False
-assert helpers.check_clique(matrix_0_cliques, new_row_0_b) == True
+assert helpers.check_clique(matrix_0_cliques, new_row_0_a, 1) == False
+assert helpers.check_clique(matrix_0_cliques, new_row_0_b, 1) == True
 new_row_1_a = [0, 0, 0, 0, 0]
 new_row_1_b = [1, 0, 0, 1, 1]
-assert helpers.check_clique(matrix_1_cliques, new_row_1_a) == False
-assert helpers.check_clique(matrix_1_cliques, new_row_1_b) == True
+assert helpers.check_clique(matrix_1_cliques, new_row_1_a, 1) == False
+assert helpers.check_clique(matrix_1_cliques, new_row_1_b, 1) == True
