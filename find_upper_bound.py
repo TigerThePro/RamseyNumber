@@ -6,17 +6,17 @@ import helpers
 # searching for additional node with maximum degree s.t.
 # it doesn't create clique of size n
 # value is the the color of edge
-# write to result/upperbound.txt
-def search(matrix, n, value):
+# write to result/[address].txt
+def search(matrix, n, value, address):
   small_cliques = helpers.find_subgraphs(matrix, n-1, 1)
   bound = [0]
   row = np.zeros(len(matrix))
   row[0] = value
-  search_helper(small_cliques, row, value, bound)
+  search_helper(small_cliques, row, value, bound, address)
   return
 
 
-def search_helper(small_cliques, row, value, bound):
+def search_helper(small_cliques, row, value, bound, address):
   if (row[-1] == value): 
     return
   rightmost = 0
@@ -45,16 +45,16 @@ def search_helper(small_cliques, row, value, bound):
     # check if it's a new bound
     if (occ > bound[0]):
       bound[0] = occ
-      f = open("result/upperbound_color1", 'w')
+      f = open("result/" + address, 'w')
       f.write("Bound = " + str(bound[0]))
       f.write("\n")
       f.write(str(row_copy))
       f.close()
 
-    search_helper(small_cliques, row_copy, value, bound)
+    search_helper(small_cliques, row_copy, value, bound, address)
 
 
 
 matrices = helpers.read_graph_to_matrix("r46_35some.g6", 35)
 
-result = search(matrices[0], 4, 1)
+result = search(matrices[0], 4, 1, "upperbound_color1")
