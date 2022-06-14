@@ -3,35 +3,53 @@ import numpy as np
 import math
 import helpers
 
-# searching for additional with maximum degree s.t.
+# searching for additional node with maximum degree s.t.
 # it doesn't create clique of size n
 # value is the the color of edge
-def search_all(matrix, n, value):
+# write to result/upperbound.txt
+def search(matrix, n, value):
   small_cliques = helpers.find_subgraphs(matrix, n-1, 1)
-  upper_bound = 0
-  results = []
-  for i in range(1, 2**35):
-    bin_str = "{0:b}".format(i)
-    bin_str = bin_str[::-1]
-    new_row = np.zeros(len(matrix))
-    for j in range(len(bin_str)):
-      if (bin_str[j] == '1'):
-        new_row[j] = 1
-    new_size = 0
-    for j in range(len(new_row)):
-      if (new_row[j] == value): new_size += 1 
-    if (new_size < upper_bound): continue
-    if not helpers.check_clique(small_cliques, new_row, 1):
-      if (new_size > upper_bound):
-        upper_bound = new_size
-        results = [new_row]
-      elif (new_size == upper_bound):
-        results.append(new_row)
-  return results
-  
+  bound = [0]
+  row = np.zeros(len(matrix))
+  row[0] = value
+  search_helper(small_cliques, row, value, bound)
+  return
+
+
+def search_helper(small_cliques, row, value, bound):
+  if (row[-1] == value): 
+    return
+  rightmost = 0
+  for i in range(len(row)):
+    if (row[i] == value):
+      rightmost = i
+  for i in range(rightmost+1, len(row)):
+    row_copy = row.copy()
+    row_copy[i] = value
+    occ = 0
+    for i in range(len(row)):
+      if (row_copy[i] == value): occ += 1
+
+    # if it's impossible to exceed bound, then return
+    if (occ + (len(row) - i) <= bound[0]): return
+
+    # check if row is working
+    if helpers.check_clique(small_cliques, row_copy, value):
+      return
+    
+    # check if it's a new bound
+    if (occ > bound[0]):
+      bound[0] = occ
+      f = open("result/upperbound_color1", 'w')
+      f.write("Bound = " + str(bound[0]))
+      f.write("\n")
+      f.write(str(row_copy))
+      f.close()
+
+    search_helper(small_cliques, row_copy, value, bound)
 
 
 
 matrices = helpers.read_graph_to_matrix("r46_35some.g6", 35)
 
-result = search_all(matrices[0], 4, 1)
+result = search(matrices[0], 4, 1)
