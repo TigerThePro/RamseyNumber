@@ -50,8 +50,22 @@ graph.add_edges_from(edges)
 matrix_2 = helpers.graph_to_matrix(graph, 4)
 matrix_2_cliques = [[0, 1, 2], [0, 1, 3], [0, 1, 4], [1, 2, 3]]
 
-
+# testcase 0 for find_subgraphs
 result = helpers.find_subgraphs(matrix_0, 3)
 assert len(result) == len(matrix_0_cliques)
 for i in range(len(result)):
   assert result[i] == matrix_0_cliques[i]
+
+# testcase 1 for find_subgraphs
+result = helpers.find_subgraphs(matrix_1, 3)
+result.sort()
+assert len(result) == len(matrix_1_cliques)
+for i in range(len(result)):
+  assert result[i] == matrix_1_cliques[i]
+
+# testcase 2 for find_subgraphs
+result = helpers.find_subgraphs(matrix_2, 3)
+result.sort()
+assert len(result) == len(matrix_2_cliques)
+for i in range(len(result)):
+  assert result[i] == matrix_2_cliques[i]
