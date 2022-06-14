@@ -28,13 +28,14 @@ def graph_to_matrix(graph, n):
         matrix[i][j] = -1
   return matrix
 
+
 # TODO
 # take in adj matrix, int n
 # return a list, where each element is a n tuple
 # each element is a size n clique found in the adj matrix
 # will use this as preprocessing in search to reduce 
 # time spent on checking cliques
-def find_subgraph():
+def find_subgraphs(matrix, n):
   return []
 
 

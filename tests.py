@@ -1,5 +1,6 @@
 import networkx as nx
 import numpy as np
+import matplotlib.pyplot as plt
 import math
 import time
 
@@ -24,3 +25,33 @@ for i in range(len(produced)):
 
 
 # test for find_subgraphs
+graph = nx.Graph()
+edges = [(0, 1), (0, 2), (1, 2)]
+graph.add_edges_from(edges)
+# visualize the graph
+# nx.draw(graph, with_labels=True, node_color="#dae05a")
+# plt.show()
+matrix_0 = helpers.graph_to_matrix(graph, 3)
+matrix_0_cliques = [[0, 1, 2]]
+
+graph = nx.Graph()
+edges = [(0, 2), (0, 3), (0, 4), (1, 4), (2, 3), (3, 4)]
+graph.add_edges_from(edges)
+# nx.draw(graph, with_labels=True, node_color="#dae05a")
+# plt.show()
+matrix_1 = helpers.graph_to_matrix(graph, 5)
+matrix_1_cliques = [[0, 2, 3], [0, 3, 4]]
+
+graph = nx.Graph()
+edges = [(0, 1), (0, 2), (0, 3), (1, 2), (1, 3), (2, 3)]
+graph.add_edges_from(edges)
+# nx.draw(graph, with_labels=True, node_color="#dae05a")
+# plt.show()
+matrix_2 = helpers.graph_to_matrix(graph, 4)
+matrix_2_cliques = [[0, 1, 2], [0, 1, 3], [0, 1, 4], [1, 2, 3]]
+
+
+result = helpers.find_subgraphs(matrix_0, 3).sort()
+assert len(result) == len(matrix_0_cliques)
+for i in range(len(result)):
+  assert result[i] == matrix_0_cliques[i]
