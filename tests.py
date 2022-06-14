@@ -51,7 +51,7 @@ matrix_2 = helpers.graph_to_matrix(graph, 4)
 matrix_2_cliques = [[0, 1, 2], [0, 1, 3], [0, 1, 4], [1, 2, 3]]
 
 
-result = helpers.find_subgraphs(matrix_0, 3).sort()
+result = helpers.find_subgraphs(matrix_0, 3)
 assert len(result) == len(matrix_0_cliques)
 for i in range(len(result)):
   assert result[i] == matrix_0_cliques[i]

@@ -36,7 +36,31 @@ def graph_to_matrix(graph, n):
 # will use this as preprocessing in search to reduce 
 # time spent on checking cliques
 def find_subgraphs(matrix, n):
-  return []
+  acc = []
+  for i in  range(len(matrix)):
+    size = len(acc)
+    if size == 0:
+      acc.append([i])
+      continue
+    for j in range(size):
+      sub_size = len(acc[j])
+      if (sub_size == n): continue
+      good = True
+      for k in range(sub_size):
+        if not matrix[i][acc[j][k]]:
+          good = False
+          break
+      if good:
+        new_list = acc[j].copy()
+        new_list.append(i)
+        acc.append(new_list)
+  result = []
+  for s in acc:
+    if len(s) == n:
+      result.append(s);
+  return result
+
+  
 
 
 
