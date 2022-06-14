@@ -17,10 +17,11 @@ def search_all(matrix, n, value):
     for j in range(len(bin_str)):
       if (bin_str[j] == '1'):
         new_row[j] = 1
+    new_size = 0
+    for j in range(len(new_row)):
+      if (new_row[j] == value): new_size += 1 
+    if (new_size < upper_bound): continue
     if not helpers.check_clique(small_cliques, new_row, 1):
-      new_size = 0
-      for j in range(len(new_row)):
-        if (new_row[j] == value): new_size += 1
       if (new_size > upper_bound):
         upper_bound = new_size
         results = [new_row]
