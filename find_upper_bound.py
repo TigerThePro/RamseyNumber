@@ -30,8 +30,13 @@ def search_helper(small_cliques, row, value, bound):
     for i in range(len(row)):
       if (row_copy[i] == value): occ += 1
 
-    # if it's impossible to exceed bound, then return
-    if (occ + (len(row) - i) <= bound[0]): return
+    # # if it's impossible to exceed bound, 
+    # # even with all remaining elemnts == value
+    # # then return
+    # if (occ + (len(row) - i - 1) <= bound[0]): 
+    #   print(str((occ + (len(row) - i - 1))))
+    #   print(str(i))
+    #   return
 
     # check if row is working
     if helpers.check_clique(small_cliques, row_copy, value):
