@@ -30,13 +30,16 @@ def graph_to_matrix(graph, n):
 
 
 # TODO
-# take in adj matrix, int n
+# take in adj matrix, int n, value
 # return a list, where each element is a n tuple
 # each element is a size n clique found in the adj matrix
 # will use this as preprocessing in search to reduce 
 # time spent on checking cliques
-def find_subgraphs(matrix, n):
-  acc = []
+# two nodes i,j are adjacent if matrix[i][j] == value
+def find_subgraphs(matrix, n, value):
+  acc = [[]]
+  result = []
+  if (n == 0): return result
   for i in  range(len(matrix)):
     size = len(acc)
     if size == 0:
@@ -44,20 +47,18 @@ def find_subgraphs(matrix, n):
       continue
     for j in range(size):
       sub_size = len(acc[j])
-      if (sub_size == n): continue
       good = True
       for k in range(sub_size):
-        if not matrix[i][acc[j][k]]:
+        if matrix[i][acc[j][k]] != value:
           good = False
           break
       if good:
         new_list = acc[j].copy()
         new_list.append(i)
-        acc.append(new_list)
-  result = []
-  for s in acc:
-    if len(s) == n:
-      result.append(s);
+        if (len(new_list) == n):
+          result.append(new_list)
+        else:
+          acc.append(new_list)
   return result
 
   
