@@ -8,7 +8,7 @@ import helpers
 # value is the the color of edge
 # write to result/[address].txt
 def search(matrix, n, value, address):
-  small_cliques = helpers.find_subgraphs(matrix, n-1, 1)
+  small_cliques = helpers.find_subgraphs(matrix, n-1, value)
   bound = [0]
   row = np.zeros(len(matrix))
   row[0] = value
@@ -57,4 +57,4 @@ def search_helper(small_cliques, row, value, bound, address):
 
 matrices = helpers.read_graph_to_matrix("r46_35some.g6", 35)
 
-result = search(matrices[0], 4, 1, "upperbound_color1")
+result = search(matrices[0], 6, -1, "upperbound_color2")
